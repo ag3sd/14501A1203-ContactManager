@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="foundation/css/foundation.css" />
+    <link rel="stylesheet" href="foundation-icons/foundation-icons.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    
+
+
+</head>
+
+<body ng-app="dash" ng-controller="dashcont">
+
+    <div class="top-bar hide-for-small-only ">
+        <div class="top-bar-left ">
+            <ul class="menu">
+
+                <li class="menu-text ">Site Title</li>
+                <li>
+                    <button type="button" class="button"  data-open="showall" ng-click="loadall()" >ALL Contacts</button>
+                </li>
+                <li>
+                    <button type="button" class="button" ng-click="change(2)">Groups</button>
+                </li>
+                <!--<li>
+                    <button type="button" class="button" ng-click="change(3)">Inactive</button>
+                </li>
+                <li>
+                    <button type="button" class="button" ng-click="change(4)">Settings</button>
+                </li>-->
+                <li>
+                    <li>
+                        <input  type="search" placeholder="Search">
+                    </li>
+                    <li>
+                        <button type="button" ng-modal="search" class="button">Search</button>
+                    </li>
+            </ul>
+        </div>
+        <div class="top-bar-right">
+            <ul class="menu">
+                <li>
+                    <a type="button" class="button" href="logout.php">Logout</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="title-bar show-for-small-only">
+            <div class="title-bar-left">
+              <button class="menu-icon" type="button" data-toggle="offCanvas"></button>
+              <span class="title-bar-title">Foundation</span>
+            </div>
+    </div>
+
+    
+
+    <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+
+
+
+        <!-- Menu -->
+        <ul class="vertical menu">
+            <li>
+                <a href="#">ALL Contacts</a>
+            </li>
+            <li>
+                <a href="#">Groups</a>
+            </li>
+            <li>
+                <a href="#">Inactive</a>
+            </li>
+            <li>
+                <a href="#">Settings</a>
+            </li>
+            <li>
+
+        </ul>
+
+    </div>
+
+    <div class="off-canvas-content" data-off-canvas-content id="contain">
+        <!-- Your page content lives here -->
+        <!-- <button type="button" class="button" ng-click="load()">ntg</button>-->
+        <table class="hover unstriped">
+            <tbody ng-repeat="i in groups|orderBy:grpname| filter">
+                <tr>
+                    <td>{{i.gname}}</td>
+                    <td></td>
+                    <td  ><button type="button" class="button" data-open="showgrp" ng-click="loadcon(i.gid)"><i class="fi-arrow-down"></i></button></td>
+                    <td><a ng-click="crtcon(i.gid)" data-open="crtcon"><i class="fi-plus size-36"></i></a></td>
+                    <td><a ng-click="crtcon(i.gid)" data-open="editgrp"><i class="fi-pencil size-36"></i></a></td>
+                    <td><a ng-click="crtcon(i.gid)" data-open="deletegrp"><i class="fi-trash size-36"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="allcon" hidden>
+        <span>just for test</span>
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- Create group -->
+    <div class="create">
+        <a data-open="creategrp">
+            <i class="fi-plus size-18"></i>
+        </a>
+
+    </div>
+    <div class="reveal" id="creategrp" data-reveal data-overlay="false">
+        <form name="grp">
+            <p class="lead">Create a new Group</p>
+            <input type="text" id="grpname" name="grpname" ng-model="grpname" placeholder="Group name">
+            <button  type="button" data-close aria-label="Close modal" ng-click="crtgrp()" class="button">Create</button>
+
+        </form>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!-- Delete group -->
+    <div class="reveal" id="deletegrp" data-reveal data-overlay="false">
+            <form name="grp3">
+                <p class="lead">Do you really want delete this Group</p>
+
+                <button  type="button" data-close aria-label="Close modal" ng-click="delgrp()" class="button">Delete</button>
+    
+            </form>
+    
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+
+        <!-- edit group -->
+        <div class="reveal" id="editgrp" data-reveal data-overlay="false">
+                <form name="grp2">
+                    <p class="lead">Edit Group</p>
+                    <input type="text" id="grpname" name="grpname" ng-model="grpname" placeholder="New name">
+                    <button  type="button" data-close aria-label="Close modal" ng-click="editgrp()" class="button">Save</button>
+        
+                </form>
+        
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+            <!-- show group -->
+        <div class="full reveal" id="showgrp" data-reveal data-overlay="false">
+                <table class="hover unstriped">
+                        <tbody ng-repeat="k in contacts|orderBy:cname">
+                            <tr data-open="opengrp">
+                                <td>{{k.name}}</td>
+                                <td></td>
+                                <td>{{k.phone}}</td>
+                                <td></td>
+                                <td>{{k.email}}</td>
+                               
+                                <td><a data-open="editcon"><i class="fi-pencil size-36"></i></a></td>
+                                <td><a data-open="deletecon"><i class="fi-trash size-36"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+        
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- show all -->
+            <div class="full reveal" id="showall" data-reveal data-overlay="false">
+                    <table class="hover unstriped">
+                            <tbody ng-repeat="k in all|orderBy:cname">
+                                <tr data-open="opengrp">
+                                    <td>{{k.name}}</td>
+                                    <td></td>
+                                    <td>{{k.phone}}</td>
+                                    <td></td>
+                                    <td>{{k.email}}</td>
+                                   
+                                    <td><a data-open="editcon"><i class="fi-pencil size-36"></i></a></td>
+                                    <td><a data-open="deletecon"><i class="fi-trash size-36"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+            
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+            <!-- create contact -->
+            <div class="reveal" id="crtcon" data-reveal data-overlay="false">
+                    <form name="con">
+                        <p class="lead">Create a new contact in this group</p>
+                        <input type="text" id="name" name="name" ng-model="name" placeholder="Name">
+                        
+                        <input type="text" id="phone" name="phone" ng-model="phone" placeholder="Phone">
+                        
+                        <input type="text" id="email" name="email" ng-model="email" placeholder="Email">
+                        <button  type="button" data-close aria-label="Close modal" ng-click="createcon()" class="button">Create</button>
+            
+                    </form>
+            
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+    
+
+    <script src="js/angular.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="foundation/js/vendor/jquery.js"></script>
+    <script src="foundation/js/vendor/what-input.js"></script>
+    <script src="foundation/js/vendor/foundation.js"></script>
+    <script>
+        $(document).foundation();
+
+    </script>
+
+</body>
+
+</html>
