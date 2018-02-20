@@ -19,7 +19,7 @@
         <div class="top-bar-left ">
             <ul class="menu">
 
-                <li class="menu-text ">Site Title</li>
+                <li class="menu-text ">Inmar Contacts</li>
                 <li>
                     <button type="button" class="button"  data-open="showall" ng-click="loadall()" >ALL Contacts</button>
                 </li>
@@ -44,7 +44,7 @@
         <div class="top-bar-right">
             <ul class="menu">
                 <li>
-                    <a type="button" class="button" href="logout.php">Logout</button>
+                    <button type="button" class="button" data-toggle="accmenu" ><i class="fi-torso size-48"></i></button>
                 </li>
             </ul>
         </div>
@@ -67,18 +67,18 @@
         <!-- Menu -->
         <ul class="vertical menu">
             <li>
-                <a href="#">ALL Contacts</a>
+                <a href="#" data-open="showall" ng-click="loadall()" >ALL Contacts</a>
             </li>
             <li>
                 <a href="#">Groups</a>
             </li>
-            <li>
+          <!--  <li>
                 <a href="#">Inactive</a>
             </li>
             <li>
                 <a href="#">Settings</a>
             </li>
-            <li>
+        -->
 
         </ul>
 
@@ -92,10 +92,10 @@
                 <tr>
                     <td>{{i.gname}}</td>
                     <td></td>
-                    <td  ><button type="button" class="button" data-open="showgrp" ng-click="loadcon(i.gid)"><i class="fi-arrow-down"></i></button></td>
-                    <td><a ng-click="crtcon(i.gid)" data-open="crtcon"><i class="fi-plus size-36"></i></a></td>
-                    <td><a ng-click="crtcon(i.gid)" data-open="editgrp"><i class="fi-pencil size-36"></i></a></td>
-                    <td><a ng-click="crtcon(i.gid)" data-open="deletegrp"><i class="fi-trash size-36"></i></a></td>
+                    <td  ><a data-open="showgrp" ng-click="loadcon(i.gid)"><i class="fi-arrow-down">Expand</i></a></td>
+                    <td><a ng-click="crtcon(i.gid)" data-open="crtcon"><i class="fi-plus size-36">Add contact</i></a></td>
+                    <td><a ng-click="crtcon(i.gid)" data-open="editgrp"><i class="fi-pencil size-36">Edit</i></a></td>
+                    <td><a ng-click="crtcon(i.gid)" data-open="deletegrp"><i class="fi-trash size-36">Delete</i></a></td>
                 </tr>
             </tbody>
         </table>
@@ -103,7 +103,21 @@
 
     <div id="allcon" hidden>
         <span>just for test</span>
+
     </div>
+
+
+
+    <div class="dropdown-pane top" id="accmenu" data-dropdown>
+            <ul class="vertical menu">
+                    
+                    <li>
+                        <a href="logout.php">Logout</a>
+                    </li>
+                
+        
+                </ul>
+          </div>
 
 
 
@@ -116,7 +130,7 @@
     <!-- Create group -->
     <div class="create">
         <a data-open="creategrp">
-            <i class="fi-plus size-18"></i>
+            <i class="fi-plus size-18">Create groups</i>
         </a>
 
     </div>

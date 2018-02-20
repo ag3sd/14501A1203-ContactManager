@@ -3,8 +3,10 @@
     
      
     unset($_COOKIE['inmarmail']);       
+     unset($_COOKIE['inmarpsw']);
      unset($_COOKIE['test']);
-     setcookie('inmarmail',"0", time()-3600,"/");        
+     setcookie('inmarmail',"0", time()-3600,"/");  
+     setcookie('inmarpsw',"0", time()-3600,"/");        
     setcookie('test',"0", time()-3600,"/");    
 
     echo "<h4>Logged Out</h4>";
