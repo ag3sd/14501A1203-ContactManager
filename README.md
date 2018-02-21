@@ -1,5 +1,5 @@
 # 14501A1203-ContactManager
-\This project is developed using HTML, Angular JS and FOUNDATION framework for CSS on the client side and PHP on the server side and MySQL as the database.
+This project is developed using HTML, Angular JS and FOUNDATION framework for CSS on the client side and PHP on the server side and MySQL as the database.
 
 ###PREREQUISITES
 
