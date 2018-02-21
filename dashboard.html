@@ -21,10 +21,10 @@
 
                 <li class="menu-text ">Inmar Contacts</li>
                 <li>
-                    <button type="button" class="button"  data-open="showall" ng-click="loadall()" >ALL Contacts</button>
+                    <button type="button" class="button"  ng-click="loadall()" >ALL Contacts</button>
                 </li>
                 <li>
-                    <button type="button" class="button" ng-click="change(2)">Groups</button>
+                    <button type="button" class="button" ng-click="loadgroup()">Groups</button>
                 </li>
                 <!--<li>
                     <button type="button" class="button" ng-click="change(3)">Inactive</button>
@@ -34,11 +34,9 @@
                 </li>-->
                 <li>
                     <li>
-                        <input  type="search" placeholder="Search">
+                        <input  type="search" placeholder="Search" ng-model="search">
                     </li>
-                    <li>
-                        <button type="button" ng-modal="search" class="button">Search</button>
-                    </li>
+                   
             </ul>
         </div>
         <div class="top-bar-right">
@@ -67,10 +65,10 @@
         <!-- Menu -->
         <ul class="vertical menu">
             <li>
-                <a href="#" data-open="showall" ng-click="loadall()" >ALL Contacts</a>
+                <a href="#"  ng-click="loadall()" >ALL Contacts</a>
             </li>
             <li>
-                <a href="#">Groups</a>
+                <a href="#" ng-click"loadgroup()">Groups </a>
             </li>
           <!--  <li>
                 <a href="#">Inactive</a>
@@ -84,17 +82,17 @@
 
     </div>
 
-    <div class="off-canvas-content" data-off-canvas-content id="contain">
+    <div class="off-canvas-content"  data-off-canvas-content>
         <!-- Your page content lives here -->
         <!-- <button type="button" class="button" ng-click="load()">ntg</button>-->
-        <table class="hover unstriped">
-            <tbody ng-repeat="i in groups|orderBy:grpname| filter">
+        <table class="hover unstriped"id="showallgrp" >
+            <tbody ng-repeat="i in groups|orderBy:grpname| filter:search">
                 <tr>
                     <td>{{i.gname}}</td>
                     <td></td>
                     <td  ><a data-open="showgrp" ng-click="loadcon(i.gid)"><i class="fi-arrow-down">Expand</i></a></td>
                     <td><a ng-click="crtcon(i.gid)" data-open="crtcon"><i class="fi-plus size-36">Add contact</i></a></td>
-                    <td><a ng-click="crtcon(i.gid)" data-open="editgrp"><i class="fi-pencil size-36">Edit</i></a></td>
+                    <td><a ng-click="crtcon(i.gid,i.gname)" data-open="editgrp"><i class="fi-pencil size-36">Edit</i></a></td>
                     <td><a ng-click="crtcon(i.gid)" data-open="deletegrp"><i class="fi-trash size-36">Delete</i></a></td>
                 </tr>
             </tbody>
@@ -129,12 +127,12 @@
 
     <!-- Create group -->
     <div class="create">
-        <a data-open="creategrp">
+        <a data-open="creatgrp" id="creategrp" ng-click="refgrp()">
             <i class="fi-plus size-18">Create groups</i>
         </a>
 
     </div>
-    <div class="reveal" id="creategrp" data-reveal data-overlay="false">
+    <div class="reveal" id="creatgrp" data-reveal data-overlay="false">
         <form name="grp">
             <p class="lead">Create a new Group</p>
             <input type="text" id="grpname" name="grpname" ng-model="grpname" placeholder="Group name">
@@ -147,6 +145,30 @@
         </button>
     </div>
 
+     
+<!-- Create normal con -->
+<div class="create">
+    <a data-open="createcontact" id="createcontacts" ng-click="refcon()">
+        <i class="fi-plus size-18">Create contacts</i>
+    </a>
+
+</div>
+<div class="reveal" id="createcontact" data-reveal data-overlay="false">
+    <form name="con">
+        <p class="lead">Create a new contact</p>
+        <input type="text" id="name" name="name" ng-model="name" placeholder="Name">
+        
+        <input type="text" id="phone" name="phone" ng-model="phone" placeholder="Phone">
+        
+        <input type="text" id="email" name="email" ng-model="email" placeholder="Email">
+        <button  type="button" data-close aria-label="Close modal" ng-click="createcon()" class="button">Create</button>
+
+    </form>
+
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
     <!-- Delete group -->
     <div class="reveal" id="deletegrp" data-reveal data-overlay="false">
             <form name="grp3">
@@ -166,7 +188,7 @@
         <div class="reveal" id="editgrp" data-reveal data-overlay="false">
                 <form name="grp2">
                     <p class="lead">Edit Group</p>
-                    <input type="text" id="grpname" name="grpname" ng-model="grpname" placeholder="New name">
+                    <input type="text" id="egrpname" name="egrpname" ng-model="egrpname" placeholder="New name">
                     <button  type="button" data-close aria-label="Close modal" ng-click="editgrp()" class="button">Save</button>
         
                 </form>
@@ -177,10 +199,11 @@
             </div>
 
 
-            <!-- show group -->
-        <div class="full reveal" id="showgrp" data-reveal data-overlay="false">
+            <!-- show contacts in group -->
+        <div class="reveal" id="showgrp" data-reveal data-overlay="false">
+                <input  type="search" placeholder="Search" ng-model="searchingrp">
                 <table class="hover unstriped">
-                        <tbody ng-repeat="k in contacts|orderBy:cname">
+                        <tbody ng-repeat="k in contacts|orderBy:cname| filter:searchingrp">
                             <tr data-open="opengrp">
                                 <td>{{k.name}}</td>
                                 <td></td>
@@ -188,8 +211,23 @@
                                 <td></td>
                                 <td>{{k.email}}</td>
                                
-                                <td><a data-open="editcon"><i class="fi-pencil size-36"></i></a></td>
-                                <td><a data-open="deletecon"><i class="fi-trash size-36"></i></a></td>
+                                <td><a ng-click="crtcon2(k.name)" data-open="editcon"><i class="fi-pencil size-36"></i></a></td>
+                                <td><a ng-click="crtcon2(k.name)" data-open="deletecon"><i class="fi-trash size-36"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+        
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- add contacts to group -->
+            <div class="reveal" id="addtogrp" data-reveal data-overlay="false">
+                    <input  type="search" placeholder="Search" ng-model="searchgrp">
+                <table class="hover unstriped">
+                        <tbody ng-repeat="k in groups|orderBy:gname| filter:searchgrp">
+                            <tr data-open="opengrp" ng-click="selectgrp(k.gid)">
+                                    <td >{{k.gname}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -200,28 +238,28 @@
             </div>
 
             <!-- show all -->
-            <div class="full reveal" id="showall" data-reveal data-overlay="false">
+            <div  id="showall" >
                     <table class="hover unstriped">
-                            <tbody ng-repeat="k in all|orderBy:cname">
+                            <tbody ng-repeat="k in all|orderBy:cname| filter:search">
                                 <tr data-open="opengrp">
                                     <td>{{k.name}}</td>
                                     <td></td>
                                     <td>{{k.phone}}</td>
                                     <td></td>
                                     <td>{{k.email}}</td>
-                                   
-                                    <td><a data-open="editcon"><i class="fi-pencil size-36"></i></a></td>
-                                    <td><a data-open="deletecon"><i class="fi-trash size-36"></i></a></td>
+                                    <td><a ng-click="crtcon2(k.name)"data-open="addtogrp"><i class="fi-plus size-36">Add to group</i></a></td>
+                                    <td><a ng-click="crtcon2(k.name,k.phone,k.email)" data-open="editcon"><i class="fi-pencil size-36">Edit</i></a></td>
+                                    <td><a ng-click="crtcon2(k.name)"data-open="deletecon"><i class="fi-trash size-36">Delete</i></a></td>
                                 </tr>
                             </tbody>
                         </table>
             
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <!--     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
-                    </button>
+                    </button>-->
                 </div>
 
-            <!-- create contact -->
+            <!-- create contact in grp- -->
             <div class="reveal" id="crtcon" data-reveal data-overlay="false">
                     <form name="con">
                         <p class="lead">Create a new contact in this group</p>
@@ -238,7 +276,24 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-    
+                
+             <!-- edit contact -->
+             <div class="reveal" id="editcon" data-reveal data-overlay="false">
+                <form name="editcon">
+                    <p class="lead">Edit Contact </p>
+                    <input type="text" id="ename" name="ename" ng-model="ename" placeholder="Name">
+                    
+                    <input type="text" id="ephone" name="ephone" ng-model="ephone" placeholder="Phone">
+                    
+                    <input type="text" id="eemail" name="eemail" ng-model="eemail" placeholder="Email">
+                    <button  type="button" data-close aria-label="Close modal" ng-click="editcon()" class="button">Create</button>
+        
+                </form>
+        
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>    
 
     <script src="js/angular.js"></script>
     <script src="js/dashboard.js"></script>

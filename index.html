@@ -11,7 +11,7 @@
    
 </head>
 
-<body>
+<body ng-app="init" ng-controller="cont1" ng-cloak>
         <div class="top-bar ">
                 <div class="top-bar-left ">
                   <ul class="dropdown menu " data-dropdown-menu>
@@ -23,11 +23,11 @@
                 
               </div>
     <div class="grid-container">
-        <div ng-app="init" ng-controller="cont1" class="grid-container grid-x grid-margin-x align-justify">
+        <div  class="grid-container grid-x grid-margin-x align-justify">
             <div id="init"  class="grid-x grid-margin-x align-right small-12 medium-12 large-6">
                    
                 <div class="small-10 medium-10 large-10">
-                    <form name="RegForm"action="register.php" method="POST" ng-submit="submitpost()" novalidate>
+                    <form name="RegForm"action="register.php" method="POST" ng-submit="submitpost()" novalidate >
                             <h3>Registration</h3>
                         <input id="fname" name="fname" ng-model="fname" ng-required="true" type="text" placeholder="First Name">
                         <span ng-show="RegForm.fname.$invalid && !RegForm.fname.$pristine">First Name is Required</span>
@@ -47,11 +47,11 @@
 
                         <input id="psw" name="psw" ng-model="psw" ng-required="true" type="password" ng-minlength="8" ng-maxlength="15"  placeholder="Password" ng-keyup="checkstrength()" ng-pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*&_!@.]).{8,15}/">
                         <span ng-show="RegForm.psw.$invalid && !RegForm.psw.$pristine ">Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters</span>
-                        
+                        <span>{{strength}}</span>
 
 
                         <input id="cnfpsw" name="cnfpsw" ng-model="cnfpsw" ng-required="true" type="password" placeholder="Confirm Password" ng-keyup="checkcnfpsw()">
-                        <span ng-show=" RegForm.cnfpsw.$invalid && !RegForm.cnfpsw.$pristine">Enter Confirm Password</span><br>
+                        <span ng-show=" RegForm.cnfpsw.$invalid && !RegForm.cnfpsw.$pristine">Enter Confirm Password</span>
                         <span>{{str}}</span>
 
                         <select id="gender" name="gender" ng-model-options="gender" ng-required="true">
@@ -76,10 +76,10 @@
             <div id="login"  class="grid-x grid-margin-x align-left small-12 medium-12 large-6 ">
 
                 <div class="small-10 medium-10 large-10 ">
-                    <form name="LogForm"  ng-submit="login()" novalidate>
+                    <form name="LogForm"  ng-submit="login()" novalidate >
                         <h3>Login</h3>
                         <input id="lemail" name="lemail" ng-model="lemail" ng-required="true" type="email" placeholder="Email ID" ng-pattern="/[a-z0-9._]+@inmar\.com/">
-                        <span ng-show="LogForm.lemail.$invalid && !LogForm.lemail.$pristine">Your email should be something@inmar.com</span>
+                        <span ng-show="LogForm.lemail.$invalid && !LogForm.lemail.$pristine" >Your email should be something@inmar.com</span>
 
                         <input id="lpsw" name="lpsw" ng-model="lpsw" ng-required="true" type="password" placeholder="Password" ng-pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/">
                         <p ng-show="LogForm.lpsw.$invalid && !LogForm.lpsw.$pristine">Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters</p>

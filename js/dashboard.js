@@ -1,16 +1,21 @@
 var app = angular.module("dash", []);
 app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
     (function () {
-        if(getcookie("set")=='x')
+        if(getcookie("test")=='x')
         {
 
         }
         else{
-            window.location.assign(index.html);
+            window.location.assign("index.html");
         }
-        alert("hai");
+       // alert("hai");
         Get.getgrps($scope);
+        $("#createcontacts").hide();
     })();
+    $scope.gid=0;
+
+    //$scope.convisible=false;
+    //$scope.grpvisible=true;
     $scope.load = function () {
         Get.getgrps($scope);
     };
@@ -18,27 +23,82 @@ app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
         Get.getcon($scope,gid);
     };
     $scope.crtgrp= function(){
-        alert("in create");
+       // alert("in create");
         Sendgrp.sendgrp($scope);
     };
-    $scope.crtcon= function(gid=0){
+    $scope.selectgrp= function(gid){
+        // alert("in create");
+        alert("dfgh");
+         Sendgrp.sendtogrp($scope,gid);
+     };
+    $scope.refgrp= function(){
+
+        document.getElementById("grpname").value="" ;
+        
+    };
+    $scope.refcon= function(which=0){
+        
+        document.getElementById("name").value="" ;
+        document.getElementById("phone").value="";
+        document.getElementById("email").value="";
+        if(which=1)
+        $scope.gid=0;
+    };
+    $scope.crtcon= function(gid=0,gname=0){
        // $('#creategrp').foundation('reveal', 'open');
-        alert(gid);
+        //alert(gid);
         $scope.gid=gid;
+        document.getElementById("egrpname").value=gname;
         //Sendcon.sendcon($scope,gid);
     };
+    $scope.crtcon2= function(cname,cphone=0,cemail=0){
+        // $('#creategrp').foundation('reveal', 'open');
+        // alert(cname+""+cphone);
+
+         $scope.key=cname;
+         document.getElementById("ename").value=cname;
+         document.getElementById("ephone").value=cphone;
+         document.getElementById("eemail").value=cemail;
+         
+         //Sendcon.sendcon($scope,gid);
+     };
     $scope.createcon= function()
     {   
-        alert($scope.gid);
+        //alert($scope.gid);
         Sendcon.sendcon($scope,$scope.gid);
     };
     $scope.delgrp= function()
     { 
         del.remgrp($scope,$scope.gid);
     };
+    $scope.delgrp= function()
+    { 
+        del.remcon($scope,$scope.key);
+    };
+    $
+    $scope.loadgroup= function()
+    {
+        //alert("grpshow");
+        $("#creategrp").show();
+        $("#showallgrp").show();
+        $("#showall").hide();
+        $("#createcontacts").hide();
+        Get.load();
+    };
     $scope.loadall= function()
     {
+        $("#creategrp").hide();
+        $("#createcontacts").show();
+        $("#showall").show();
+        $("#showallgrp").hide();
+        //$scope.convisible=true;
+        //$scope.grpvisible=false;
         Get.getall($scope);
+    };
+    $scope.editcon=function()
+    {
+       // alert("hai");
+        Edit.editcon($scope);
     };
     $scope.editgrp= function()
     {
@@ -48,7 +108,7 @@ app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
 });
 app.service("del",function($http){
     this.remgrp= function(s,gid){
-        alert("remgrp");
+        //alert("remgrp");
         var request = $http({
             method: "post",
             url: "delgrp.php",
@@ -56,10 +116,10 @@ app.service("del",function($http){
             transformRequest: function (obj) {
                 var str = [];
                 for (var p in obj) {
-                    //console.log(p);
+                      
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 }
-                //alert(str.join("&"));
+                  
                 return str.join("&");
             },
             data: {
@@ -70,11 +130,45 @@ app.service("del",function($http){
             }
         });
 
-        // Store the data-dump of the FORM scope. 
+         
         request.success(
             function (data) {
-                alert(data)
+               // alert(data)
                 s.load();
+            }
+        );
+
+    };
+
+
+    this.remgrp= function(s,gid){
+       // alert("remgrp");
+        var request = $http({
+            method: "post",
+            url: "delcon.php",
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj) {
+                    
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
+               
+                return str.join("&");
+            },
+            data: {
+
+
+                cname: key,
+                owner: getcookie("inmarmail")
+            }
+        });
+
+        
+        request.success(
+            function (data) {
+               // alert(data)
+                s.loadall();
             }
         );
 
@@ -83,7 +177,7 @@ app.service("del",function($http){
 app.service("Edit",function($http){
     this.editgrp=function(s,gid)
     {
-        alert("in send grp")
+        
         var request = $http({
             method: "post",
             url: "editgrp.php",
@@ -91,54 +185,90 @@ app.service("Edit",function($http){
             transformRequest: function (obj) {
                 var str = [];
                 for (var p in obj) {
-                    //console.log(p);
+                   
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 }
-                //alert(str.join("&"));
+              
                 return str.join("&");
             },
             data: {
 
 
-                gname: s.grpname,
+                gname: s.egrpname,
                 gid: gid,
                 owner: getcookie("inmarmail")
             }
         });
 
-        // Store the data-dump of the FORM scope. 
+       
         request.success(
             function (data) {
                 alert(data)
-                //v.message = data; 
-                //alert(JSON.stringify(data));
-                //v.collect=data;
-                //alert("Group created successfully");
+                
                 s.load();
             }
         );
 
     };
+
+    this.editcon=function(s,key)
+    {
+       
+        var request = $http({
+            method: "post",
+            url: "editcon.php",
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj) {
+                      
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
+                  
+                return str.join("&");
+            },
+            data: {
+
+
+                
+                key: key,
+                owner: getcookie("inmarmail")
+            }
+        });
+
+         
+        request.success(
+            function (data) {
+                alert(data)
+                
+                
+                s.loadall();
+            }
+        );
+
+    };
+
+
 });
 app.service("Get", function ($http) {
     this.getgrps = function (s) {
-        alert("in get grp");
+       //alert("in get grp");
           $http.get("getgrp.php")
             .then(function(response) {
                 s.groups = response.data;
-                alert(JSON.stringify(s.groups));
+               // alert(JSON.stringify(s.groups));
             });
     }
     this.getall = function (s) {
-        alert("in get all");
+        //alert("in get all");
           $http.get("getall.php")
             .then(function(response) {
                 s.all = response.data;
-                alert(JSON.stringify(s.groups));
+               // alert(JSON.stringify(s.groups));
             });
     }
     this.getcon = function (s,gid) {
-        alert("cbye");
+      //  alert("cbye");
         var request = $http({
             method: "post",
             url: "getcon.php",
@@ -146,10 +276,10 @@ app.service("Get", function ($http) {
             transformRequest: function (obj) {
                 var str = [];
                 for (var p in obj) {
-                    //console.log(p);
+                    
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 }
-                //alert(str.join("&"));
+                  
                 return str.join("&");
             },
             data: {
@@ -160,14 +290,14 @@ app.service("Get", function ($http) {
             }
         });
 
-        // Store the data-dump of the FORM scope. 
+         
         request.success(
             function (data) {
-                alert(data)
+              //  alert(data)
                 
                 s.contacts=data;
-               // alert(JSON.stringify(data));
-                alert(JSON.stringify(s.contacts));
+               
+              
             }
         );
 
@@ -175,7 +305,7 @@ app.service("Get", function ($http) {
 });
 app.service("Sendgrp", function ($http) {
     this.sendgrp = function (s) {
-        alert("in send grp")
+       // alert("in send grp")
         var request = $http({
             method: "post",
             url: "creategrp.php",
@@ -183,10 +313,10 @@ app.service("Sendgrp", function ($http) {
             transformRequest: function (obj) {
                 var str = [];
                 for (var p in obj) {
-                    //console.log(p);
+                      
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 }
-                //alert(str.join("&"));
+                
                 return str.join("&");
             },
             data: {
@@ -197,24 +327,56 @@ app.service("Sendgrp", function ($http) {
             }
         });
 
-        // Store the data-dump of the FORM scope. 
+         
         request.success(
             function (data) {
-                alert(data)
-                //v.message = data; 
-                //alert(JSON.stringify(data));
-                //v.collect=data;
-                //alert("Group created successfully");
+               
                 s.load();
             }
         );
 
 
     }
+    this.sendtogrp = function (s,gid) {
+        
+        alert(gid);
+         var request = $http({
+             method: "post",
+             url: "addtogrp.php",
+             headers: { 'content-type': 'application/x-www-form-urlencoded' },
+             transformRequest: function (obj) {
+                 var str = [];
+                 for (var p in obj) {
+                       
+                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                 }
+                   
+                 return str.join("&");
+             },
+             data: {
+ 
+ 
+                 cname: s.key,
+                 gid:gid,
+                 owner: getcookie("inmarmail")
+             }
+         });
+ 
+          
+         request.success(
+             function (data) {
+                alert(data)
+                
+                 s.load();
+             }
+         );
+ 
+ 
+     }
 });
 app.service("Sendcon", function ($http) {
-    this.sendcon = function (s,gid) {
-        alert("in send con")
+    this.sendcon = function (s,lid) {
+    // alert("in send con")
         var request = $http({
             method: "post",
             url: "creatcon.php",
@@ -222,14 +384,13 @@ app.service("Sendcon", function ($http) {
             transformRequest: function (obj) {
                 var str = [];
                 for (var p in obj) {
-                    //console.log(p);
+                      
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 }
-                //alert(str.join("&"));
+                  
                 return str.join("&");
             },
             data: {
-
 
                 name:  s.name,
                 phone: s.phone,
@@ -239,15 +400,13 @@ app.service("Sendcon", function ($http) {
             }
         });
 
-        // Store the data-dump of the FORM scope. 
+         
         request.success(
             function (data) {
-                alert(data)
-                //v.message = data; 
-                //alert(JSON.stringify(data));
-                //v.collect=data;
-                //alert("Group created successfully");
+                
                 s.loadcon();
+                s.loadall();
+                //alert("end");
             }
         );
 
@@ -256,7 +415,7 @@ app.service("Sendcon", function ($http) {
 });
 
 function getcookie(cname) {
-    alert("enter");
+    //alert("enter");
     var name = cname + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {

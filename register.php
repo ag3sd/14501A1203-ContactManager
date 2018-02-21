@@ -23,6 +23,7 @@ else
  if($result==true)
  {
     echo "uploaded successfully";
+    header('location:index.html');
  }
   
  else

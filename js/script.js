@@ -6,14 +6,13 @@ var app = angular.module("init", []);
 app.controller("cont1", function ($scope, validation, postlogin) {
     (function () {
        
-        var em = getcookie("inmarmail");
-        var x = getcookie("test");
-
-        //alert(em + " got" + pw);
-        if (x=='x') {
+        var em = getcookie("test");
+       // var pp = getcookie("inmarpsw");
+        if(em=="x")
+        {
             window.location.assign("dashboard.html");
-            
         }
+        
     })();
     function getcookie(cname) {
         //alert("enter");
@@ -142,9 +141,9 @@ app.service("postlogin", function ($http) {
 
 
     this.postdata = function (v) {
-           // alert("fghj");
+           alert("fghj");
         var request = $http({
-            method: "post",
+            method: "POST",
             url: "login.php",
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             transformRequest: function (obj) {
@@ -172,7 +171,8 @@ app.service("postlogin", function ($http) {
                     alert(data);
                 }
                 else {
-                    alert("error" + data);
+                    alert( data);
+                    window.location.assign("dashboard.html");
                 }
 
             }

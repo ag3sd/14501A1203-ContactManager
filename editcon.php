@@ -1,11 +1,10 @@
 <?php
 	
-				
-    				$name=$_POST['name'];
-                    //$owner=$_POST['owner']; 
-                    $phone=$_POST['phone'];
+		
+                     $name=$_POST['name'];
+                     $phone=$_POST['phone'];
                     $email=$_POST['email'];
-                    $gid=$_POST['gid'];   				
+                    $key=$_POST['key'];  				
                     $owner=$_COOKIE['inmarmail'];
     				$conn = new mysqli('localhost', 'root', '', 'contacts');
     				// Check connection
@@ -14,20 +13,19 @@
        					die("Connection failed: " . $conn->connect_error);
                     } 
                     
-                        $sql = "INSERT INTO cinf VALUES('$name','$phone','$email',$gid,'$owner')";
-    				    $result = $conn->query($sql);
-                    
                     //echo "document.console.log('$gid')";
-    				
+    				$sql = "UPDATE cinf SET name='$name' phone='$phone' email='$email' WHERE name='$key' and owner='$owner' ";
+    				$result = $conn->query($sql);
     				if($result==true)
     				{
                        
-                        echo "<h4>conttact created successfully</h4>".$gid;
+                        if($rest==true)
+                        echo "<h4>contact editedted successfully</h4>".$gid;
                         
     				}	
     				else
     				{
-    					echo "<h4>contact creation failed Try with a different name</h4>";	
+    					echo "<h4>contact edit failed</h4>";	
     				}	
 
 ?>
