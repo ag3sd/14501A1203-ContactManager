@@ -13,6 +13,7 @@ app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
         $("#createcontacts").hide();
     })();
     $scope.gid=0;
+    $scope.which=0;
 
     //$scope.convisible=false;
     //$scope.grpvisible=true;
@@ -20,7 +21,10 @@ app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
         Get.getgrps($scope);
     };
     $scope.loadcon= function(gid=0) {
-        Get.getcon($scope,gid);
+       
+        $scope.crtcon(gid);
+        alert($scope.gid);
+        Get.getcon($scope,$scope.gid);
     };
     $scope.crtgrp= function(){
        // alert("in create");
@@ -41,13 +45,14 @@ app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
         document.getElementById("name").value="" ;
         document.getElementById("phone").value="";
         document.getElementById("email").value="";
-        if(which=1)
+        if(which==1)
         $scope.gid=0;
     };
     $scope.crtcon= function(gid=0,gname=0){
        // $('#creategrp').foundation('reveal', 'open');
-        //alert(gid);
+        alert(gid);
         $scope.gid=gid;
+        
         document.getElementById("egrpname").value=gname;
         //Sendcon.sendcon($scope,gid);
     };
@@ -64,14 +69,15 @@ app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
      };
     $scope.createcon= function()
     {   
-        //alert($scope.gid);
+        alert($scope.gid);
+
         Sendcon.sendcon($scope,$scope.gid);
     };
     $scope.delgrp= function()
     { 
         del.remgrp($scope,$scope.gid);
     };
-    $scope.delgrp= function()
+    $scope.delcon= function()
     { 
         del.remcon($scope,$scope.key);
     };
@@ -83,7 +89,7 @@ app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
         $("#showallgrp").show();
         $("#showall").hide();
         $("#createcontacts").hide();
-        Get.load();
+        Get.getgrps();
     };
     $scope.loadall= function()
     {
@@ -108,7 +114,7 @@ app.controller("dashcont", function ($scope, Get, Sendgrp,Sendcon,del,Edit) {
 });
 app.service("del",function($http){
     this.remgrp= function(s,gid){
-        //alert("remgrp");
+        alert(gid);
         var request = $http({
             method: "post",
             url: "delgrp.php",
@@ -141,7 +147,7 @@ app.service("del",function($http){
     };
 
 
-    this.remgrp= function(s,gid){
+    this.remcon= function(s,key){
        // alert("remgrp");
         var request = $http({
             method: "post",
@@ -268,7 +274,7 @@ app.service("Get", function ($http) {
             });
     }
     this.getcon = function (s,gid) {
-      //  alert("cbye");
+        alert(gid);
         var request = $http({
             method: "post",
             url: "getcon.php",
@@ -293,9 +299,10 @@ app.service("Get", function ($http) {
          
         request.success(
             function (data) {
-              //  alert(data)
+                alert(data)
                 
-                s.contacts=data;
+                s.gcontacts=data;
+                alert(s.gcontacts);
                
               
             }
@@ -375,8 +382,8 @@ app.service("Sendgrp", function ($http) {
      }
 });
 app.service("Sendcon", function ($http) {
-    this.sendcon = function (s,lid) {
-    // alert("in send con")
+    this.sendcon = function (s,gid) {
+     alert("in send con")
         var request = $http({
             method: "post",
             url: "creatcon.php",

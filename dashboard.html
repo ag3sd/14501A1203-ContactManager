@@ -90,7 +90,7 @@
                 <tr>
                     <td>{{i.gname}}</td>
                     <td></td>
-                    <td  ><a data-open="showgrp" ng-click="loadcon(i.gid)"><i class="fi-arrow-down">Expand</i></a></td>
+                    <td ><a data-open="showgrp" ng-click="loadcon(i.gid)"><i class="fi-arrow-down">Expand</i></a></td>
                     <td><a ng-click="crtcon(i.gid)" data-open="crtcon"><i class="fi-plus size-36">Add contact</i></a></td>
                     <td><a ng-click="crtcon(i.gid,i.gname)" data-open="editgrp"><i class="fi-pencil size-36">Edit</i></a></td>
                     <td><a ng-click="crtcon(i.gid)" data-open="deletegrp"><i class="fi-trash size-36">Delete</i></a></td>
@@ -148,7 +148,7 @@
      
 <!-- Create normal con -->
 <div class="create">
-    <a data-open="createcontact" id="createcontacts" ng-click="refcon()">
+    <a data-open="createcontact" id="createcontacts" ng-click="refcon(1)">
         <i class="fi-plus size-18">Create contacts</i>
     </a>
 
@@ -203,13 +203,13 @@
         <div class="reveal" id="showgrp" data-reveal data-overlay="false">
                 <input  type="search" placeholder="Search" ng-model="searchingrp">
                 <table class="hover unstriped">
-                        <tbody ng-repeat="k in contacts|orderBy:cname| filter:searchingrp">
+                        <tbody ng-repeat="v in gcontacts|orderBy:cname| filter:searchingrp">
                             <tr data-open="opengrp">
-                                <td>{{k.name}}</td>
+                                <td>{{v.name}}</td>
                                 <td></td>
-                                <td>{{k.phone}}</td>
+                                <td>{{v.phone}}</td>
                                 <td></td>
-                                <td>{{k.email}}</td>
+                                <td>{{v.email}}</td>
                                
                                 <td><a ng-click="crtcon2(k.name)" data-open="editcon"><i class="fi-pencil size-36"></i></a></td>
                                 <td><a ng-click="crtcon2(k.name)" data-open="deletecon"><i class="fi-trash size-36"></i></a></td>
@@ -221,6 +221,20 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
+             <!-- Delete contact -->
+    <div class="reveal" id="deletecon" data-reveal data-overlay="false">
+        <form name="grp3">
+            <p class="lead">Do you really want delete this contact</p>
+
+            <button  type="button" data-close aria-label="Close modal" ng-click="delcon()" class="button">Delete</button>
+
+        </form>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
             <!-- add contacts to group -->
             <div class="reveal" id="addtogrp" data-reveal data-overlay="false">
                     <input  type="search" placeholder="Search" ng-model="searchgrp">
